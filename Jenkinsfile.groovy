@@ -1,5 +1,5 @@
 //SCANNER_HOME="/tmp/sonar-scanner-4.5.0.2216-linux"
-SCANNER_HOME="/home/jenkins/workspace/mvn_build_and_test"
+SCANNER_HOME="/home/jenkins/workspace/mvn_build_and_test/sonar-scanner-4.5.0.2216-linux"
 
 pipeline {
     agent {
@@ -23,7 +23,7 @@ pipeline {
                  //sh 'mvn clean package sonar:sonar'
 		  sh """ ${SCANNER_HOME}/bin/sonar-scanner \
                          -Dsonar.java.binaries=target/classes \
-		         -Dsonar.projectBaseDir=/tmp \
+		         -Dsonar.projectBaseDir=${WORKSPACE} \
 		         -Dsonar.projectKey=mvn-project \
 			 -Dsonar.working.directory=${WORKSPACE}/.scannerwork \
 			 -Dsonar.sources=src/main/java
