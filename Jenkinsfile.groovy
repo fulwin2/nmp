@@ -22,7 +22,7 @@ pipeline {
 		  println "${env.SONAR_HOST_URL}"
                  //sh 'mvn clean package sonar:sonar'
 		  sh """ ${SCANNER_HOME}/bin/sonar-scanner \
-                         -Dsonar.qualitygate= Mvntest \
+                         -Dsonar.qualitygate=Mvntest \
                          -Dsonar.java.binaries=target/classes \
 		         -Dsonar.projectBaseDir=${WORKSPACE} \
 		         -Dsonar.projectKey=mvn-project \
