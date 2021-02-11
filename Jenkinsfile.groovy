@@ -46,12 +46,15 @@ pipeline {
 	
 	stage("NMP") {
 	    steps {	
-		try {
-	          sh "mvn compile"
-	          sh "mvn package"
-	          println "SUCCESS: ${BUILD_NUMBER}"
-		} catch (Exception e){
-		  testPassed = false	
+		
+		script {
+		   try {
+	             sh "mvn compile"
+	             sh "mvn package"
+	             println "SUCCESS: ${BUILD_NUMBER}"
+		   } catch (Exception e){
+		     testPassed = false	
+		   }	
 		}	
 		
             }
