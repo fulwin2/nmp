@@ -3,16 +3,17 @@ SCANNER_HOME="/home/jenkins/workspace/mvn_build_and_test/sonar-scanner-4.5.0.221
 
 pipeline {
     agent {
-         label 'java-docker-slave'	
-    }	
+         label 'java-docker-slave'
+    }
 
    /* environment {
         sonar.working.directory = '/tmp'
         DB_ENGINE    = 'sqlite'
     }
    */
+   //
     stages {
-	
+
      stage("build & SonarQube analysis") {
 	 steps {
               println "$SCANNER_HOME"
@@ -29,7 +30,7 @@ pipeline {
 			 -Dsonar.working.directory=${WORKSPACE}/.scannerwork \
 			 -Dsonar.sources=src/main/java
 		     """
-              }		  
+              }
 	 }
       }
 
@@ -43,25 +44,25 @@ pipeline {
 		    }
 	        }
 	      }
-          
+
 	}
       }
-	
+
 	stage("NMP") {
-	    steps {	
-		
+	    steps {
+
 		script {
 		   try {
 	             sh "mvn compile"
 	             sh "mvn package"
 	             println "SUCCESS: ${BUILD_NUMBER}"
 		   } catch (Exception e){
-		     testPassed = false	
-		   }	
-		}	
-		
+		     testPassed = false
+		   }
+		}
+
             }
        }
-	
+
     }
 }
