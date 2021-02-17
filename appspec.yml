@@ -1,0 +1,5 @@
+version: 0.0
+os: linux
+files:
+  - source: ./gs-maven-0.1.3.jar
+    destination: /tmp
