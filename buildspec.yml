@@ -12,8 +12,8 @@ phases:
     commands:
       - echo Build completed on `date`
       - mvn package
+      - zip mvn_artifact.zip target/gs-maven-0.1.3.jar appspec.yml
 artifacts:
   files:
-    - target/gs-maven-0.1.3.jar
-    - appspec.yml
+    - mvn_artifact.zip
   discard-paths: yes
