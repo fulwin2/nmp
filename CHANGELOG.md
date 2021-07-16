@@ -1,7 +1,8 @@
 ## [0.0.1] - 2020-07-14
 
 ### Added
-
+-
+- Comments
 - This CHANGELOG file to hopefully serve as an evolving example of a
   standardized open source project CHANGELOG.
 - CNAME file to enable GitHub Pages custom domain
