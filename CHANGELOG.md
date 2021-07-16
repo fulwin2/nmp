@@ -1,6 +1,7 @@
 ## [0.0.1] - 2020-07-14
 
 ### Added
+- This line should be referenced by tag v4.0
 - This line should be referenced by tag v3.0
 - Comments
 - This CHANGELOG file to hopefully serve as an evolving example of a
