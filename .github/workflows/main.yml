@@ -1,5 +1,4 @@
 on: [push]
-
 jobs:
   hello_world_job:
    uses: fulwin2/js_actions/.github/workflows/main.yml@main
