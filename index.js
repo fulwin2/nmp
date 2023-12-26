@@ -3,7 +3,7 @@ const github = require('@actions/github');
 
 try {
   // `who-to-greet` input defined in action metadata file
-  const nameToGreet = core.getInput('who-to-greet');
+  const nameToGreet = core.getInput('who_to_greet');
   console.log(`Hello ${nameToGreet}!`);
 
   const args = process.argv.slice(2); // The first two elements are 'node' and the script name
