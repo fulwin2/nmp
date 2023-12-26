@@ -5,7 +5,7 @@ try {
   // `who-to-greet` input defined in action metadata file
   const nameToGreet = core.getInput('who_to_greet');
   console.log(`Hello ${nameToGreet}!`);
-
+  console.log(`Hello ${process.env.WHO_TO_GREET}`);
   const args = process.argv.slice(2); // The first two elements are 'node' and the script name
 
 
