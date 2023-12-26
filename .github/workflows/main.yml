@@ -3,6 +3,6 @@ jobs:
   hello_world_job:
    uses: fulwin2/js_actions/.github/workflows/main.yml@main
    with: 
-     who-to-greet: Olegio_v6
+     who-to-greet: Olegio_v7
      
 
