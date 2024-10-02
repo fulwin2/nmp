@@ -17,18 +17,9 @@ stages {
 
   stage("NMP") {
     steps {
-
-      script {
-        try {
-          sh "mvn compile"
-          sh "mvn package"
-          println "SUCCESS: ${BUILD_NUMBER}"
-          } catch (Exception e){
-            testPassed = false
-          }
-        }
-
-      }
+        withMaven {
+          sh "mvn clean verify"
+        } 
     }
 
   }
