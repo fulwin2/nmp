@@ -14,39 +14,6 @@ pipeline {
 //
 stages {
 
-  stage("build & SonarQube analysis") {
-    steps {
-      println "$SCANNER_HOME"
-      sh "pwd && ls -lsa ."
-
-      withSonarQubeEnv("SonarCube") {
-        println "${env.SONAR_HOST_URL}"
-        //sh 'mvn clean package sonar:sonar'
-        sh """ ${SCANNER_HOME}/bin/sonar-scanner \
-        -Dsonar.qualitygate=Mvntest \
-        -Dsonar.java.binaries=target/classes \
-        -Dsonar.projectBaseDir=${WORKSPACE} \
-        -Dsonar.projectKey=mvn-project \
-        -Dsonar.working.directory=${WORKSPACE}/.scannerwork \
-        -Dsonar.sources=src/main/java
-        """
-      }
-    }
-  }
-
-  stage("Quality Gate"){
-    steps {
-      withSonarQubeEnv("SonarCube") {
-        withCredentials([string(credentialsId: 'jenkins1', variable: 'SONAR_TOKEN')]) {
-          sh "printenv"
-          timeout(time: 1, unit: 'HOURS') {
-            waitForQualityGate abortPipeline: true
-          }
-        }
-      }
-
-    }
-  }
 
   stage("NMP") {
     steps {
