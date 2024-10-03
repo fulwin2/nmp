@@ -3,7 +3,7 @@ SCANNER_HOME="/home/jenkins/workspace/mvn_build_and_test/sonar-scanner-4.5.0.221
 //Comment
 pipeline {
   agent {
-    label 'java-docker-slave'
+    label 'jenkins-slave'
   }
 
   /* environment {
@@ -12,14 +12,23 @@ pipeline {
 }
 */
 //
-  stages {
-    stage("Build") {
-      steps {
-        git url: 'https://github.com/cyrille-leclerc/multi-module-maven-project'
-        withMaven {
+stages {
+
+  stage("NMP") {
+    steps {
+
+      script {
+        try {
           sh "mvn compile"
-        } // withMaven will discover the generated Maven artifacts, JUnit Surefire & FailSafe reports and FindBugs reports
+          sh "mvn package"
+          println "SUCCESS: ${BUILD_NUMBER}"
+          } catch (Exception e){
+            testPassed = false
+          }
+        }
+
       }
     }
+
   }
 }
