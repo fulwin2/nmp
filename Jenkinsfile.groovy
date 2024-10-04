@@ -30,11 +30,11 @@ stages {
       }
     }
 
-  }
   stage('Archive Artifacts') {
     steps {
       // Archive the artifact from the target/ directory
       archiveArtifacts artifacts: 'target/*.jar', allowEmptyArchive: false
     }
   }
+}
 }
