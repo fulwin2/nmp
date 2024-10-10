@@ -2,17 +2,11 @@
 SCANNER_HOME="/home/jenkins/workspace/mvn_build_and_test/sonar-scanner-4.5.0.2216-linux"
 @Library('selecttag@master') _
 //Comment
-def getGitHubTagsLocal() {
-  def tags = getGitHubTags.fetchGitTags("https://github.com/fulwin2/nmp")
-  return tags ?: ['latest']
-}
+
 pipeline {
   agent {
     label 'jenkins-slave'
   }
-parameters {
-        choice(name: 'TAG_VERSION', choices: getGitHubTagsLocal(), description: 'Choose the Git tag version to build')
-}
 
   /* environment {
   sonar.working.directory = '/tmp'
@@ -21,6 +15,22 @@ parameters {
 */
 //
 stages {
+        stage('Fetch Tags') {
+            steps {
+                script {
+                    // Fetch the Git tags dynamically using the shared library
+                    def availableTags = getGitHubTags.fetchGitTags("https://github.com/fulwin2/nmp")
+
+                    // If no tags are found, provide a default option
+                    availableTags = availableTags ?: ['latest']
+
+                    // Prompt the user to select a tag from the dynamically fetched list
+                    env.TAG_NAME = input message: 'Select a Git tag to build from:',
+                                        ok: 'Proceed',
+                                        parameters: [choice(name: 'TAG_NAME', choices: availableTags, description: 'Git Tag')]
+                }
+            }
+        }
   stage("NMP") {
     steps {
 
