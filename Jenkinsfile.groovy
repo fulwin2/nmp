@@ -18,7 +18,7 @@ parameters {
 //
 stages {
   stage('init') {
-      scripts {
+      script {
         library "select_tags@master"
       }
    }
