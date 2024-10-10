@@ -9,6 +9,10 @@ def fetchGitTags(String repoUrl) {
         gitTags = tagsOutput.readLines().collect { line ->
             line.split()[1].replaceAll('refs/tags/', '')
         }
+        gitTags = gitTags.findAll { tag -> 
+            !tag.endsWith('^{}') // Exclude tags that end with ^{}
+        }
+        
     } catch (Exception e) {
         echo "Failed to fetch Git tags: ${e.message}"
     }
