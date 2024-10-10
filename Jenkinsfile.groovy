@@ -1,9 +1,11 @@
 //SCANNER_HOME="/tmp/sonar-scanner-4.5.0.2216-linux"
 SCANNER_HOME="/home/jenkins/workspace/mvn_build_and_test/sonar-scanner-4.5.0.2216-linux"
+@Library('selecttag@master') _
 //Comment
+
 pipeline {
   agent {
-    label 'java-docker-slave'
+    label 'jenkins-slave'
   }
 
   /* environment {
@@ -13,41 +15,22 @@ pipeline {
 */
 //
 stages {
+        stage('Fetch Tags') {
+            steps {
+                script {
+                    // Fetch the Git tags dynamically using the shared library
+                    def availableTags = getGitHubTags.fetchGitTags("https://github.com/fulwin2/nmp")
 
-  stage("build & SonarQube analysis") {
-    steps {
-      println "$SCANNER_HOME"
-      sh "pwd && ls -lsa ."
+                    // If no tags are found, provide a default option
+                    availableTags = availableTags ?: ['latest']
 
-      withSonarQubeEnv("SonarCube") {
-        println "${env.SONAR_HOST_URL}"
-        //sh 'mvn clean package sonar:sonar'
-        sh """ ${SCANNER_HOME}/bin/sonar-scanner \
-        -Dsonar.qualitygate=Mvntest \
-        -Dsonar.java.binaries=target/classes \
-        -Dsonar.projectBaseDir=${WORKSPACE} \
-        -Dsonar.projectKey=mvn-project \
-        -Dsonar.working.directory=${WORKSPACE}/.scannerwork \
-        -Dsonar.sources=src/main/java
-        """
-      }
-    }
-  }
-
-  stage("Quality Gate"){
-    steps {
-      withSonarQubeEnv("SonarCube") {
-        withCredentials([string(credentialsId: 'jenkins1', variable: 'SONAR_TOKEN')]) {
-          sh "printenv"
-          timeout(time: 1, unit: 'HOURS') {
-            waitForQualityGate abortPipeline: true
-          }
+                    // Prompt the user to select a tag from the dynamically fetched list
+                    env.TAG_NAME = input message: 'Select a Git tag to build from:',
+                                        ok: 'Proceed',
+                                        parameters: [choice(name: 'TAG_NAME', choices: availableTags, description: 'Git Tag')]
+                }
+            }
         }
-      }
-
-    }
-  }
-
   stage("NMP") {
     steps {
 
@@ -64,5 +47,12 @@ stages {
       }
     }
 
+  stage('Archive Artifacts') {
+    steps {
+      // Archive the artifact from the target/ directory
+      archiveArtifacts artifacts: 'target/*.jar', allowEmptyArchive: false
+    }
   }
 }
+}
+
