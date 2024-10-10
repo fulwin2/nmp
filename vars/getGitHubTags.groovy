@@ -1,9 +1,17 @@
-def call(String apiUrl) {
-    //def apiUrl = "https://api.github.com/repos/your-username/your-repo/tags"
-    def response = new URL(apiUrl).openConnection()
-    response.setRequestProperty("Accept", "application/vnd.github.v3+json")
-    def tags = new groovy.json.JsonSlurper().parse(response.inputStream)
+#!/usr/bin/env groovy
+
+def fetchGitTags(String repoUrl) {
+    // Fetch all remote tags from the repository
+    def gitTags = []
     
-    // Return tag names as a list, fallback to a static list if request fails
-    return tags.collect { it.name } ?: ['v1.1.1', 'v2.2.2', 'v3.3.3']
+    try {
+        def tagsOutput = sh(script: "git ls-remote --tags ${repoUrl}", returnStdout: true).trim()
+        gitTags = tagsOutput.readLines().collect { line ->
+            line.split()[1].replaceAll('refs/tags/', '')
+        }
+    } catch (Exception e) {
+        echo "Failed to fetch Git tags: ${e.message}"
+    }
+
+    return gitTags
 }
