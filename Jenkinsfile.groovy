@@ -37,7 +37,7 @@ stages {
       script {
        
         try {
-          git checkout tags/${env.TAG_NAME}
+          sh "git checkout tags/${env.TAG_NAME}"
           sh "mvn compile"
           sh "mvn package"
           println "SUCCESS: ${BUILD_NUMBER}  ${env.TAG_NAME}"
