@@ -38,7 +38,7 @@ stages {
         try {
           sh "mvn compile"
           sh "mvn package"
-          println "SUCCESS: ${BUILD_NUMBER}"
+          println "SUCCESS: ${BUILD_NUMBER}  ${env.TAG_NAME}"
           } catch (Exception e){
             testPassed = false
           }
