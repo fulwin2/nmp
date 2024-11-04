@@ -35,6 +35,8 @@ stages {
     steps {
 
       script {
+        println "SUCCESS: ${BUILD_NUMBER}  ${env.TAG_NAME}"
+       
         try {
           sh "mvn compile"
           sh "mvn package"
